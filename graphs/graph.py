@@ -94,6 +94,9 @@ class Graph:
         
         # Add vertex_id2 as neighbor to vertex_id1 to make link/edge
         self.__vertex_dict[vertex_id1].add_neighbor(self.__vertex_dict[vertex_id2])
+
+        if not self.__is_directed:
+            self.__vertex_dict[vertex_id2].add_neighbor(self.__vertex_dict[vertex_id1])
         
     def get_vertices(self):
         """
