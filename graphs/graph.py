@@ -206,4 +206,39 @@ class Graph:
         Returns:
         list<string>: All vertex ids that are `target_distance` away from the start vertex
         """
-        pass
+        if not self.contains_id(start_id):
+            raise KeyError("Vertex not found")
+
+        # vertex keys we've seen before
+        visited = set()
+        # list of vertices that are the target_distance away from start vertex
+        n_away_vertices = []
+
+        # queue of vertices to visit next
+        queue = deque() 
+        # add first item and its distance (0)
+        queue.append((start_id, 0))
+        visited.add(start_id)
+
+        # do bfs
+        while queue:
+            # removes vertex_obj from queue and return it
+            current_vertex_obj = queue.pop() 
+
+            current_vertex_id = current_vertex_obj[0]
+            vertex_distance = current_vertex_obj[1]
+            
+            # if distances match, add to n_away_vertices
+            if vertex_distance == target_distance:
+                n_away_vertices.append(current_vertex_id)
+
+            # get neighbors of current vertex 
+            neighbors = self.get_vertex(current_vertex_id).get_neighbors()
+
+            for neighbor in neighbors:
+                # print(neighbor)
+                if neighbor.get_id() not in visited:
+                    queue.append((neighbor.get_id(), vertex_distance + 1))
+                    visited.add(neighbor.get_id())
+
+        return n_away_vertices
