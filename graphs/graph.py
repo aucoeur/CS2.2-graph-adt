@@ -8,7 +8,7 @@ class Vertex(object):
     def __init__(self, vertex_id):
         """
         Initialize a vertex and its neighbors dictionary.
-        
+
         Parameters:
         vertex_id (string): A unique identifier to identify this vertex.
         """
@@ -60,7 +60,7 @@ class Graph:
     def add_vertex(self, vertex_id):
         """
         Add a new vertex object to the graph with the given key and return the vertex.
-        
+
         Parameters:
         vertex_id (string): The unique identifier for the new vertex.
 
@@ -91,17 +91,17 @@ class Graph:
             self.add_vertex(vertex_id1)
         if vertex_id2 not in self.__vertex_dict:
             self.add_vertex(vertex_id2)
-        
+
         # Add vertex_id2 as neighbor to vertex_id1 to make link/edge
         self.__vertex_dict[vertex_id1].add_neighbor(self.__vertex_dict[vertex_id2])
 
         if not self.__is_directed:
             self.__vertex_dict[vertex_id2].add_neighbor(self.__vertex_dict[vertex_id1])
-        
+
     def get_vertices(self):
         """
         Return all vertices in the graph.
-        
+
         Returns:
         List<Vertex>: The vertex objects contained in the graph.
         """
@@ -168,7 +168,7 @@ class Graph:
         }
 
         # queue of vertices to visit next
-        queue = deque() 
+        queue = deque()
         queue.append(self.get_vertex(start_id))
 
         # while queue is not empty
@@ -198,7 +198,7 @@ class Graph:
     def find_vertices_n_away(self, start_id, target_distance):
         """
         Find and return all vertices n distance away.
-        
+
         Arguments:
         start_id (string): The id of the start vertex.
         target_distance (integer): The distance from the start vertex we are looking for
@@ -215,7 +215,7 @@ class Graph:
         n_away_vertices = []
 
         # queue of vertices to visit next
-        queue = deque() 
+        queue = deque()
         # add first item and its distance (0)
         queue.append((start_id, 0))
         visited.add(start_id)
@@ -223,16 +223,16 @@ class Graph:
         # do bfs
         while queue:
             # removes vertex_obj from queue and return it
-            current_vertex_obj = queue.pop() 
+            current_vertex_obj = queue.pop()
 
             current_vertex_id = current_vertex_obj[0]
             vertex_distance = current_vertex_obj[1]
-            
+
             # if distances match, add to n_away_vertices
             if vertex_distance == target_distance:
                 n_away_vertices.append(current_vertex_id)
 
-            # get neighbors of current vertex 
+            # get neighbors of current vertex
             neighbors = self.get_vertex(current_vertex_id).get_neighbors()
 
             for neighbor in neighbors:
@@ -244,7 +244,7 @@ class Graph:
         return n_away_vertices
 
     # pseudocode - recursive
-    def contains_cycle(self, vertex, visited=[]):
+    def contains_cycle(self, vertex, visited):
         """Return True if the graph contains a cycle, False otherwise."""
 
         # base cases: if we hit cycle or if len(visited) == size of graph
@@ -252,7 +252,7 @@ class Graph:
             # if  of current vertex in visited, return True
 
             # every node visited, return False
-        
+
         # get neighbors of vertex
         # add current vertex to visited
         # call contains_cycle(vertex_neighbors)
@@ -285,9 +285,6 @@ class Graph:
             # get neighbors
             neighbors = self.get_vertex(current_vertex_id).get_neighbors()
 
-            # if not neighbors:
-            #     return True 
-
             for neighbor in neighbors:
                 # if already visited,
                 if neighbor.get_id() not in visited.keys():
@@ -298,7 +295,7 @@ class Graph:
                     queue.append(neighbor.get_id())
                 else:
                     # is neighbor same color as current vertex color?
-                    if current_color != visited[neighbor.get_id()]:
-                        return False  
-        return True
+                    if visited[current_vertex_id] == visited[neighbor.get_id()]:
+                        return False
+            return True
                 
