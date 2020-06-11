@@ -56,3 +56,8 @@ if __name__ == '__main__':
     # graph = read_graph_from_file('test_files/graph_small_directed.txt')
 
     # print(graph)
+
+    # # Is bipartite?
+    # print('\nBipartite?')
+    # bipartite = graph.is_bipartite()
+    # print(bipartite)

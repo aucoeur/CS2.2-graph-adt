@@ -242,3 +242,63 @@ class Graph:
                     visited.add(neighbor.get_id())
 
         return n_away_vertices
+
+    # pseudocode - recursive
+    def contains_cycle(self, vertex, visited=[]):
+        """Return True if the graph contains a cycle, False otherwise."""
+
+        # base cases: if we hit cycle or if len(visited) == size of graph
+        # for neighbor in neighbors:
+            # if  of current vertex in visited, return True
+
+            # every node visited, return False
+        
+        # get neighbors of vertex
+        # add current vertex to visited
+        # call contains_cycle(vertex_neighbors)
+
+        pass
+
+    def is_bipartite(self):
+        """
+        Return True if the graph is bipartite, and False otherwise.
+        """
+        queue = deque()
+        visited = {}
+        # visited = set()
+
+        current_color = 0
+
+        current_vertex_id = list(self.__vertex_dict.keys())[0]
+
+        queue.append(current_vertex_id)
+        visited[current_vertex_id] = current_color
+        # visited.add((current_vertex_id, current_color))
+
+        while queue:
+            # use bitwise operator to 'change color' (toggle 0 and 1)
+            current_color ^= 1
+
+            # grab next in queue
+            current_vertex_id = queue.pop()
+
+            # get neighbors
+            neighbors = self.get_vertex(current_vertex_id).get_neighbors()
+
+            # if not neighbors:
+            #     return True 
+
+            for neighbor in neighbors:
+                # if already visited,
+                if neighbor.get_id() not in visited.keys():
+                    # tag neighbor with alt color, add to seen
+                    visited[neighbor.get_id()] = current_color
+
+                    # add to queue
+                    queue.append(neighbor.get_id())
+                else:
+                    # is neighbor same color as current vertex color?
+                    if current_color != visited[neighbor.get_id()]:
+                        return False  
+        return True
+                
