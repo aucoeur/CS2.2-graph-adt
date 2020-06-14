@@ -1,4 +1,5 @@
 from collections import deque
+from random import choice
 
 class Vertex(object):
     """
@@ -269,7 +270,7 @@ class Graph:
 
         current_color = 0
 
-        current_vertex_id = list(self.__vertex_dict.keys())[0]
+        current_vertex_id = choice(list(self.__vertex_dict.keys()))
 
         queue.append(current_vertex_id)
         visited[current_vertex_id] = current_color
@@ -298,4 +299,24 @@ class Graph:
                     if visited[current_vertex_id] == visited[neighbor.get_id()]:
                         return False
             return True
-                
+
+        def get_connected_components(self):
+            """
+            Return a list of all connected components, with each connected component
+            represented as a list of vertex ids.
+            """
+            pass
+
+        def topological_sort(self):
+            """    
+            Return a valid ordering of vertices in a directed acyclic graph. If the graph contains a cycle, throw a ValueError.
+            """    
+            # TODO: Create a stack to hold the vertex ordering.  
+              
+            # TODO: For each unvisited vertex, execute a DFS from that vertex.    
+
+            # TODO: On the way back up the recursion tree (that is, after visiting a vertex's neighbors), add the vertex to the stack.    
+
+            # TODO: Reverse the contents of the stack and return it as a valid ordering.    
+            
+            pass
