@@ -249,11 +249,12 @@ class Graph:
         """Return True if the graph contains a cycle, False otherwise."""
 
         # base cases: if we hit cycle or if len(visited) == size of graph
+
+        # neighbors = vertex.get_neighbors()
+
         # for neighbor in neighbors:
             # if  of current vertex in visited, return True
-
             # every node visited, return False
-
         # get neighbors of vertex
         # add current vertex to visited
         # call contains_cycle(vertex_neighbors)
@@ -287,9 +288,9 @@ class Graph:
             neighbors = self.get_vertex(current_vertex_id).get_neighbors()
 
             for neighbor in neighbors:
-                # if already visited,
+                # if not already visited,
                 if neighbor.get_id() not in visited.keys():
-                    # tag neighbor with alt color, add to seen
+                    # tag neighbor with alt color, add to visited
                     visited[neighbor.get_id()] = current_color
 
                     # add to queue
@@ -298,25 +299,59 @@ class Graph:
                     # is neighbor same color as current vertex color?
                     if visited[current_vertex_id] == visited[neighbor.get_id()]:
                         return False
-            return True
-
-        def get_connected_components(self):
-            """
-            Return a list of all connected components, with each connected component
-            represented as a list of vertex ids.
-            """
-            pass
-
-        def topological_sort(self):
-            """    
-            Return a valid ordering of vertices in a directed acyclic graph. If the graph contains a cycle, throw a ValueError.
-            """    
-            # TODO: Create a stack to hold the vertex ordering.  
-              
-            # TODO: For each unvisited vertex, execute a DFS from that vertex.    
-
-            # TODO: On the way back up the recursion tree (that is, after visiting a vertex's neighbors), add the vertex to the stack.    
-
-            # TODO: Reverse the contents of the stack and return it as a valid ordering.    
             
-            pass
+        return True
+
+    def find_connected_components(self):
+        """
+        Return a list of all connected components, with each connected component represented as a list of vertex ids.
+        """
+        connected = []
+        visited = set()
+        queue = deque()
+        components = []
+
+        current_vertex_id = choice(list(self.__vertex_dict.keys()))
+        visited.add(current_vertex_id)
+        queue.append(current_vertex_id)
+
+        while queue:
+            current_vertex_id = queue.pop()
+            components.append(current_vertex_id)
+            # print(components)
+
+            neighbors = self.get_vertex(current_vertex_id).get_neighbors()
+
+            for neighbor in neighbors:
+                if neighbor.get_id() not in visited:
+                    visited.add(neighbor.get_id())
+                    components.append(neighbor.get_id())
+            
+            connected.append(components)
+            components = []
+
+            if len(visited) == len(list(self.__vertex_dict.keys())):
+                break
+
+            unvisited = [vertex for vertex in list(self.__vertex_dict.keys()) if vertex not in visited]
+
+            current_vertex_id = choice(unvisited)
+
+            visited.add(current_vertex_id)
+            queue.append(current_vertex_id)
+
+        return connected
+
+    def topological_sort(self):
+        """    
+        Return a valid ordering of vertices in a directed acyclic graph. If the graph contains a cycle, throw a ValueError.
+        """    
+        # TODO: Create a stack to hold the vertex ordering.  
+            
+        # TODO: For each unvisited vertex, execute a DFS from that vertex.    
+
+        # TODO: On the way back up the recursion tree (that is, after visiting a vertex's neighbors), add the vertex to the stack.    
+
+        # TODO: Reverse the contents of the stack and return it as a valid ordering.    
+        
+        pass
