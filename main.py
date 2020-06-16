@@ -59,17 +59,17 @@ if __name__ == '__main__':
 
     # # Is bipartite?
 
-    graph = Graph(is_directed=False)
-    graph.add_vertex('A')
-    graph.add_vertex('B')
-    graph.add_vertex('C')
-    graph.add_edge('A','B')
-    graph.add_edge('A','C')
-    graph.add_edge('B','C')
+    # graph = Graph(is_directed=False)
+    # graph.add_vertex('A')
+    # graph.add_vertex('B')
+    # graph.add_vertex('C')
+    # graph.add_edge('A','B')
+    # graph.add_edge('A','C')
+    # graph.add_edge('B','C')
 
-    print('\nBipartite?')
-    bipartite = graph.is_bipartite()
-    print(bipartite)
+    # print('\nBipartite?')
+    # bipartite = graph.is_bipartite()
+    # print(bipartite)
 
 
     # Connected components
@@ -87,4 +87,17 @@ if __name__ == '__main__':
     # graph.add_edge('D', 'E')
 
     # print('\nConnected')
-    # print(graph.get_connected_components())
+    # print(graph.find_connected_components())
+
+
+    # Iterative DFS
+    graph = Graph(is_directed=True)
+    graph.add_vertex('A')
+    graph.add_vertex('B')
+    graph.add_vertex('C')
+    graph.add_edge('A','B')
+    graph.add_edge('B','C')
+    graph.add_edge('C','A')
+
+    print('\nIter DFS')
+    print(graph.find_path_dfs_iter('A', 'C'))

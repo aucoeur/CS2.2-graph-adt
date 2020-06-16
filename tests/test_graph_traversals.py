@@ -77,19 +77,19 @@ class TestConnectedComponents(unittest.TestCase):
         self.assertCountEqual(expected_components, actual_components)
 
 
-# class TestFindPathDfs(unittest.TestCase):
-#     # @weight(10)
-#     def test_find_path_dfs(self):
-#         graph = Graph(is_directed=True)
-#         graph.add_vertex('A')
-#         graph.add_vertex('B')
-#         graph.add_vertex('C')
-#         graph.add_edge('A','B')
-#         graph.add_edge('B','C')
-#         graph.add_edge('C','A')
+class TestFindPathDfs(unittest.TestCase):
+    # @weight(10)
+    def test_find_path_dfs(self):
+        graph = Graph(is_directed=True)
+        graph.add_vertex('A')
+        graph.add_vertex('B')
+        graph.add_vertex('C')
+        graph.add_edge('A','B')
+        graph.add_edge('B','C')
+        graph.add_edge('C','A')
 
-#         path = graph.find_path_dfs_iter('A', 'C')
-#         self.assertEqual(path, ['A', 'B', 'C'])
+        path = graph.find_path_dfs_iter('A', 'C')
+        self.assertEqual(path, ['A', 'B', 'C'])
 
 
 # class TestContainsCycle(unittest.TestCase):

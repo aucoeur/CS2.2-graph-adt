@@ -135,7 +135,7 @@ class Graph:
         queue.append(self.get_vertex(start_id))
 
         while queue:
-            current_vertex_obj = queue.pop()
+            current_vertex_obj = queue.popleft()
             current_vertex_id = current_vertex_obj.get_id()
 
             # Process current node
@@ -174,7 +174,7 @@ class Graph:
 
         # while queue is not empty
         while queue:
-            current_vertex_obj = queue.pop() # vertex obj to visit next
+            current_vertex_obj = queue.popleft() # vertex obj to visit next
             current_vertex_id = current_vertex_obj.get_id()
 
             # found target, can stop the loop early
@@ -224,7 +224,7 @@ class Graph:
         # do bfs
         while queue:
             # removes vertex_obj from queue and return it
-            current_vertex_obj = queue.pop()
+            current_vertex_obj = queue.popleft()
 
             current_vertex_id = current_vertex_obj[0]
             vertex_distance = current_vertex_obj[1]
@@ -243,23 +243,6 @@ class Graph:
                     visited.add(neighbor.get_id())
 
         return n_away_vertices
-
-    # pseudocode - recursive
-    def contains_cycle(self, vertex, visited):
-        """Return True if the graph contains a cycle, False otherwise."""
-
-        # base cases: if we hit cycle or if len(visited) == size of graph
-
-        # neighbors = vertex.get_neighbors()
-
-        # for neighbor in neighbors:
-            # if  of current vertex in visited, return True
-            # every node visited, return False
-        # get neighbors of vertex
-        # add current vertex to visited
-        # call contains_cycle(vertex_neighbors)
-
-        pass
 
     def is_bipartite(self):
         """
@@ -282,7 +265,7 @@ class Graph:
             current_color ^= 1
 
             # grab next in queue
-            current_vertex_id = queue.pop()
+            current_vertex_id = queue.popleft()
 
             # get neighbors
             neighbors = self.get_vertex(current_vertex_id).get_neighbors()
@@ -316,7 +299,7 @@ class Graph:
         queue.append(current_vertex_id)
 
         while queue:
-            current_vertex_id = queue.pop()
+            current_vertex_id = queue.popleft()
             components.append(current_vertex_id)
             # print(components)
 
@@ -341,6 +324,86 @@ class Graph:
             queue.append(current_vertex_id)
 
         return connected
+
+
+    def find_path_dfs_iter(self, start_id, target_id):
+        """
+        Use DFS with a stack to find a path from start_id to target_id.
+        """
+
+        if not self.contains_id(start_id) or not self.contains_id(target_id):
+            raise KeyError("One or both vertices are not in the graph!")
+
+
+        # queue of vertices to visit next
+        stack = deque()
+        stack.append(self.get_vertex(start_id))
+
+        # vertex keys we've seen before and their paths from the start vertex
+        path_to_target = {
+            start_id: [start_id]
+        }
+
+        # while stack is not empty
+        while stack:
+            current_vertex_obj = stack.pop() # vertex obj to visit next
+            current_vertex_id = current_vertex_obj.get_id()
+
+            # found target, can stop the loop early
+            if current_vertex_id == target_id:
+                break
+
+            neighbors = current_vertex_obj.get_neighbors()
+            for neighbor in neighbors:
+                if neighbor.get_id() not in path_to_target:
+                    stack.append(neighbor)
+                    # print(vertex_id_to_path)
+
+                    current_path = path_to_target[current_vertex_id]
+                    # extend the path by 1 vertex
+                    next_path = current_path + [neighbor.get_id()]
+                    path_to_target[neighbor.get_id()] = next_path
+                    
+        if target_id not in path_to_target: # path not found
+            return None
+
+        return path_to_target[target_id]
+
+    def dfs_traversal(self, start_id):
+        """Visit each vertex, starting with start_id, in DFS order."""
+
+        visited = set() # set of vertices we've visited so far
+
+        def dfs_traversal_recursive(start_vertex):
+            print(f'Visiting vertex {start_vertex.get_id()}')
+
+            # recurse for each vertex in neighbors
+            for neighbor in start_vertex.get_neighbors():
+                if neighbor.get_id() not in visited:
+                    visited.add(neighbor.get_id())
+                    dfs_traversal_recursive(neighbor)
+            return
+
+        visited.add(start_id)
+        start_vertex = self.get_vertex(start_id)
+        dfs_traversal_recursive(start_vertex)
+
+    # pseudocode - recursive
+    def contains_cycle(self, vertex, visited):
+        """Return True if the graph contains a cycle, False otherwise."""
+
+        # base cases: if we hit cycle or if len(visited) == size of graph
+
+        # neighbors = vertex.get_neighbors()
+
+        # for neighbor in neighbors:
+            # if  of current vertex in visited, return True
+            # every node visited, return False
+        # get neighbors of vertex
+        # add current vertex to visited
+        # call contains_cycle(vertex_neighbors)
+
+        pass
 
     def topological_sort(self):
         """    
