@@ -91,6 +91,18 @@ if __name__ == '__main__':
 
 
     # Iterative DFS
+    # graph = Graph(is_directed=True)
+    # graph.add_vertex('A')
+    # graph.add_vertex('B')
+    # graph.add_vertex('C')
+    # graph.add_edge('A','B')
+    # graph.add_edge('B','C')
+    # graph.add_edge('C','A')
+
+    # print('\nIter DFS')
+    # print(graph.find_path_dfs_iter('A', 'C'))
+
+    # Contains cycle
     graph = Graph(is_directed=True)
     graph.add_vertex('A')
     graph.add_vertex('B')
@@ -99,5 +111,5 @@ if __name__ == '__main__':
     graph.add_edge('B','C')
     graph.add_edge('C','A')
 
-    print('\nIter DFS')
-    print(graph.find_path_dfs_iter('A', 'C'))
+    print('\nCycle?')
+    print(graph.contains_cycle())

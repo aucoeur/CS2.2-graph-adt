@@ -92,45 +92,45 @@ class TestFindPathDfs(unittest.TestCase):
         self.assertEqual(path, ['A', 'B', 'C'])
 
 
-# class TestContainsCycle(unittest.TestCase):
-#     # @weight(4)
-#     def test_contains_cycle(self):
-#         graph = Graph(is_directed=True)
-#         graph.add_vertex('A')
-#         graph.add_vertex('B')
-#         graph.add_vertex('C')
-#         graph.add_edge('A','B')
-#         graph.add_edge('B','C')
-#         graph.add_edge('C','A')
+class TestContainsCycle(unittest.TestCase):
+    # @weight(4)
+    def test_contains_cycle(self):
+        graph = Graph(is_directed=True)
+        graph.add_vertex('A')
+        graph.add_vertex('B')
+        graph.add_vertex('C')
+        graph.add_edge('A','B')
+        graph.add_edge('B','C')
+        graph.add_edge('C','A')
 
-#         self.assertTrue(graph.contains_cycle())
+        self.assertTrue(graph.contains_cycle())
 
-#     # @weight(3)
-#     def test_does_not_contain_cycle_tree(self):
-#         """Test that a tree on 4 vertices does not contain a cycle."""
-#         graph = Graph(is_directed=True)
-#         vertex_a = graph.add_vertex('A')
-#         vertex_b = graph.add_vertex('B')
-#         vertex_c = graph.add_vertex('C')
-#         vertex_d = graph.add_vertex('D')
-#         graph.add_edge('A','B')
-#         graph.add_edge('A','C')
-#         graph.add_edge('A','D')
+    # @weight(3)
+    def test_does_not_contain_cycle_tree(self):
+        """Test that a tree on 4 vertices does not contain a cycle."""
+        graph = Graph(is_directed=True)
+        vertex_a = graph.add_vertex('A')
+        vertex_b = graph.add_vertex('B')
+        vertex_c = graph.add_vertex('C')
+        vertex_d = graph.add_vertex('D')
+        graph.add_edge('A','B')
+        graph.add_edge('A','C')
+        graph.add_edge('A','D')
 
-#         self.assertFalse(graph.contains_cycle())
+        self.assertFalse(graph.contains_cycle())
 
-#     # @weight(3)
-#     def test_does_not_contain_cycle_dag(self):
-#         """Test that a DAG does not contain a cycle."""
-#         graph = Graph(is_directed=True)
-#         graph.add_vertex('A')
-#         graph.add_vertex('B')
-#         graph.add_vertex('C')
-#         graph.add_edge('A','B')
-#         graph.add_edge('B','C')
-#         graph.add_edge('A','C')
+    # @weight(3)
+    def test_does_not_contain_cycle_dag(self):
+        """Test that a DAG does not contain a cycle."""
+        graph = Graph(is_directed=True)
+        graph.add_vertex('A')
+        graph.add_vertex('B')
+        graph.add_vertex('C')
+        graph.add_edge('A','B')
+        graph.add_edge('B','C')
+        graph.add_edge('A','C')
 
-#         self.assertFalse(graph.contains_cycle())
+        self.assertFalse(graph.contains_cycle())
 
 
 # class TestTopologicalSort(unittest.TestCase):

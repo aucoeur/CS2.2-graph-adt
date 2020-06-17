@@ -335,7 +335,7 @@ class Graph:
             raise KeyError("One or both vertices are not in the graph!")
 
 
-        # queue of vertices to visit next
+        # stack of vertices to visit next
         stack = deque()
         stack.append(self.get_vertex(start_id))
 
@@ -363,7 +363,7 @@ class Graph:
                     # extend the path by 1 vertex
                     next_path = current_path + [neighbor.get_id()]
                     path_to_target[neighbor.get_id()] = next_path
-                    
+
         if target_id not in path_to_target: # path not found
             return None
 
@@ -388,22 +388,45 @@ class Graph:
         start_vertex = self.get_vertex(start_id)
         dfs_traversal_recursive(start_vertex)
 
-    # pseudocode - recursive
-    def contains_cycle(self, vertex, visited):
-        """Return True if the graph contains a cycle, False otherwise."""
+        return
 
-        # base cases: if we hit cycle or if len(visited) == size of graph
+    def contains_cycle(self):
+        
+        visited = set()
+        stack = set()
 
-        # neighbors = vertex.get_neighbors()
+        start_id = choice(list(self.__vertex_dict.keys()))
 
-        # for neighbor in neighbors:
-            # if  of current vertex in visited, return True
-            # every node visited, return False
-        # get neighbors of vertex
-        # add current vertex to visited
-        # call contains_cycle(vertex_neighbors)
+        def dfs_cycle_check(vertex):
+            # print(f'Visiting vertex {start_vertex.get_id()}')
+            
+            # if it's already visited, it's been cleared for no cycle
+            if vertex in visited:
+                return False
 
-        pass
+            # else, add vertex to visited and to stack
+            visited.add(vertex)
+            stack.add(vertex)
+
+            # recurse for each vertex in neighbors
+            for neighbor in vertex.get_neighbors():
+                # if neighbor is already in the stack or seen during the recurse, it's a cycle
+                if neighbor in stack or dfs_cycle_check(neighbor):
+                    return True
+            # otherwise, no cycle, recurse done, pop from stack
+            stack.remove(vertex)
+            return False
+
+        stack.add(start_id)
+        start_vertex = self.get_vertex(start_id)
+
+        if dfs_cycle_check(start_vertex):
+            return True
+        return False
+
+        # An alternative: any() function returns True if any element of an iterable is True, returns False if any is False
+
+        # return any(dfs_cycle_check(start_vertex) for start_vertex in self.__vertex_dict.values())
 
     def topological_sort(self):
         """    
