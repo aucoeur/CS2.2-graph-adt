@@ -24,7 +24,7 @@ One similarity is that they both traverse the entire graph, all vertices and edg
 
 Depth-first Search doesn't guarantee to find the shortest path because it fully explores a path before looking for another one and as such, if there is more than one path to get from start to target, the first path it finds is not guaranteed to be the shorter one.
 
-For example, in this graph, DFS may find the path A -> C -> D -> E before it finds A -> B -> C
+For example, in this graph, DFS may find the path A -> C -> D -> E before it finds A -> B -> E
 ![](graph.png)
 
 3. Explain why we cannot perform a topological sort on a graph containing a cycle.
