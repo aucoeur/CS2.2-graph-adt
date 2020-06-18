@@ -102,14 +102,30 @@ if __name__ == '__main__':
     # print('\nIter DFS')
     # print(graph.find_path_dfs_iter('A', 'C'))
 
-    # Contains cycle
-    graph = Graph(is_directed=True)
-    graph.add_vertex('A')
-    graph.add_vertex('B')
-    graph.add_vertex('C')
-    graph.add_edge('A','B')
-    graph.add_edge('B','C')
-    graph.add_edge('C','A')
+    # # Contains cycle
+    # graph = Graph(is_directed=True)
+    # graph.add_vertex('A')
+    # graph.add_vertex('B')
+    # graph.add_vertex('C')
+    # graph.add_edge('A','B')
+    # graph.add_edge('B','C')
+    # graph.add_edge('C','A')
 
-    print('\nCycle?')
-    print(graph.contains_cycle())
+    # print('\nCycle?')
+    # print(graph.contains_cycle())
+
+    # Topo Sort
+    graph = Graph(is_directed=True)
+    vertex_b = graph.add_vertex('B')
+    vertex_c = graph.add_vertex('C')
+    vertex_d = graph.add_vertex('D')
+    vertex_d = graph.add_vertex('E')
+    vertex_a = graph.add_vertex('A')
+    graph.add_edge('A','C')
+    graph.add_edge('B','D')
+    graph.add_edge('C','D')
+    graph.add_edge('D','E')
+    graph.add_edge('A','B')
+
+    print('\nTopo??')
+    print(graph.topological_sort())

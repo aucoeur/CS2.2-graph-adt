@@ -431,13 +431,50 @@ class Graph:
     def topological_sort(self):
         """    
         Return a valid ordering of vertices in a directed acyclic graph. If the graph contains a cycle, throw a ValueError.
-        """    
-        # TODO: Create a stack to hold the vertex ordering.  
-            
-        # TODO: For each unvisited vertex, execute a DFS from that vertex.    
+        """
+        # Kahn's Algorithm
 
-        # TODO: On the way back up the recursion tree (that is, after visiting a vertex's neighbors), add the vertex to the stack.    
+        # Calculate each vertex’s in-degree (that is, how many edges are pointing to it). Add all vertices with in-degree == 0 to a set S.
 
-        # TODO: Reverse the contents of the stack and return it as a valid ordering.    
+        # in_degrees = {}
+
+        # for vertex in list(self.__vertex_dict.values()):
+
+        # While the set S is not empty:
+            # Pop a vertex V with in-degree == 0 from S and add it to the solution.
+            # Decrement the in-degree of each of V’s neighbors.
+
+            # For each of V’s neighbors N, if N’s in-degree is now 0, add it to S.
+
+        # Return the solution as the topological sort.
+
+
+        # # [incomplete] DFS - Create a stack to hold the vertex ordering
         
-        pass
+        stack = []
+        visited = set()
+        
+        if self.contains_cycle():
+            raise ValueError('Graph not DAG')
+
+        def dfs_topo_sort(vertex):
+            print(f'Visiting vertex {vertex.get_id()}')
+ 
+            visited.add(vertex.get_id())
+            # recurse for each vertex in neighbors
+            for neighbor in vertex.get_neighbors():
+                if neighbor.get_id() not in visited:
+                    dfs_topo_sort(neighbor)
+
+            # On the way back up the recursion tree (that is, after visiting a vertex's neighbors), add the vertex to the stack.
+            print(f'Visited: {visited} \nAdding {vertex.get_id()} to stack {stack}')
+            stack.append(vertex.get_id())
+
+        # For each unvisited vertex, execute a DFS from that vertex.
+        for vertex in list(self.__vertex_dict.values()):
+            print(vertex.get_id(), visited)
+            if vertex.get_id() not in visited:
+                dfs_topo_sort(vertex)
+
+        # Reverse the contents of the stack and return it as a valid ordering.    
+        return stack[::-1]
