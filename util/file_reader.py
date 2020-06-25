@@ -45,3 +45,11 @@ if __name__ == '__main__':
     graph = read_graph_from_file('test.txt')
 
     print(graph)
+    # TODO: Use the first line (G or D) to determine whether graph is directed 
+    # and create a graph object
+
+    # TODO: Use the second line to add the vertices to the graph
+
+    # TODO: Use the 3rd+ line to add the edges to the graph
+
+    pass
