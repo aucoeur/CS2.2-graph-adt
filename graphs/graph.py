@@ -13,8 +13,8 @@ class Vertex(object):
         Parameters:
         vertex_id (string): A unique identifier to identify this vertex.
         """
-        self.id = vertex_id
-        self.neighbors_dict = {} # id -> object
+        self.__id = vertex_id
+        self.__neighbors_dict = {} # id -> object
 
     def add_neighbor(self, vertex_obj):
         """
@@ -28,8 +28,8 @@ class Vertex(object):
 
     def __str__(self):
         """Output the list of neighbors of this vertex."""
-        neighbor_ids = list(self.neighbors_dict.keys())
-        return f'{self.id} adjacent to {neighbor_ids}'
+        neighbor_ids = list(self.__neighbors_dict.keys())
+        return f'{self.__id} adjacent to {neighbor_ids}'
 
     def __repr__(self):
         """Output the list of neighbors of this vertex."""
@@ -37,11 +37,11 @@ class Vertex(object):
 
     def get_neighbors(self):
         """Return the neighbors of this vertex."""
-        return list(self.neighbors_dict.values())
+        return list(self.__neighbors_dict.values())
 
     def get_id(self):
         """Return the id of this vertex."""
-        return self.id
+        return self.__id
 
 
 class Graph:
@@ -55,8 +55,8 @@ class Graph:
         Parameters:
         is_directed (boolean): Whether the graph is directed (edges go in only one direction).
         """
-        self.vertex_dict = {} # id -> object
-        self.is_directed = is_directed
+        self.__vertex_dict = {} # id -> object
+        self.__is_directed = is_directed
 
     def add_vertex(self, vertex_id):
         """
@@ -74,10 +74,10 @@ class Graph:
 
     def get_vertex(self, vertex_id):
         """Return the vertex if it exists."""
-        if vertex_id not in self.vertex_dict:
+        if vertex_id not in self.__vertex_dict:
             return None
 
-        vertex_obj = self.vertex_dict[vertex_id]
+        vertex_obj = self.__vertex_dict[vertex_id]
         return vertex_obj
 
     def add_edge(self, vertex_id1, vertex_id2):
@@ -106,10 +106,10 @@ class Graph:
         Returns:
         List<Vertex>: The vertex objects contained in the graph.
         """
-        return list(self.vertex_dict.values())
+        return list(self.__vertex_dict.values())
 
     def contains_id(self, vertex_id):
-        return vertex_id in self.vertex_dict
+        return vertex_id in self.__vertex_dict
 
     def __str__(self):
         """Return a string representation of the graph."""
@@ -289,41 +289,49 @@ class Graph:
         """
         Return a list of all connected components, with each connected component represented as a list of vertex ids.
         """
-        connected = []
-        visited = set()
-        queue = deque()
+     def find_connected_components(self):
+        """
+        Return a list of all connected components, with each connected component represented as a list of vertex ids.
+        """
+        vertices = set(self.__vertex_dict.keys())
+    
         components = []
 
-        current_vertex_id = choice(list(self.__vertex_dict.keys()))
-        visited.add(current_vertex_id)
-        queue.append(current_vertex_id)
-
-        while queue:
-            current_vertex_id = queue.popleft()
-            components.append(current_vertex_id)
-            # print(components)
-
-            neighbors = self.get_vertex(current_vertex_id).get_neighbors()
-
-            for neighbor in neighbors:
-                if neighbor.get_id() not in visited:
-                    visited.add(neighbor.get_id())
-                    components.append(neighbor.get_id())
+        # while there are unvisited vertices
+        while vertices:
+            component = []
+            queue = []
             
-            connected.append(components)
-            components = []
+            start_id = vertices.pop()
 
-            if len(visited) == len(list(self.__vertex_dict.keys())):
-                break
+            # add initial vertex to queue and component lists
+            queue.append(start_id)
+            component.append(start_id)
 
-            unvisited = [vertex for vertex in list(self.__vertex_dict.keys()) if vertex not in visited]
+            # while queue is not empty
+            while queue:
+                # pop vertex in queue
+                current_id = queue.pop()
+                current_vertex = self.get_vertex(current_id)
 
-            current_vertex_id = choice(unvisited)
+                # get neighbors
+                for neighbor in current_vertex.get_neighbors():
+                    neighbor_id = neighbor.get_id()
+                    
+                    # if neighbor unvisited, remove from vertices list
+                    if neighbor_id in vertices:
+                        vertices.remove(neighbor_id)
 
-            visited.add(current_vertex_id)
-            queue.append(current_vertex_id)
+                    # if neighbor not already in component, add to queue for processing, add to component list
+                    if neighbor_id not in component:
+                        queue.append(neighbor_id)
+                        component.append(neighbor_id)
 
-        return connected
+            # add component group to components
+            components.append(component)
+
+        return components
+
 
 
     def find_path_dfs_iter(self, start_id, target_id):
