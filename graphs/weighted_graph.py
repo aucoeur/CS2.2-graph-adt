@@ -134,7 +134,7 @@ class WeightedGraph(Graph):
         Use Kruskal's Algorithm to return a list of edges, as tuples of 
         (start_id, dest_id, weight) in the graph's minimum spanning tree.
         """
-        # Create a list of all edges in the graph, sort them by weight 
+        # Create a list of all edges in the graph, sort them by weight
         # from smallest to largest
         edges = []
         for vertex in self.get_vertices():
@@ -174,18 +174,38 @@ class WeightedGraph(Graph):
 
         Assume that the graph is connected.
         """
-        # TODO: Create a dictionary `vertex_to_weight` and initialize all
+        total_mst_weight = 0
+        # Create a dictionary `vertex_to_weight` and initialize all
         # vertices to INFINITY - hint: use `float('inf')`
+        vertex_to_weight = {x:float('inf') for x in self.get_vertices()}
 
-        # TODO: Choose one vertex and set its weight to 0
+        # Choose one vertex and set its weight to 0
+        start_vertex = self.get_vertices()[0]
+        vertex_to_weight[start_vertex] = 0
 
-        # TODO: While `vertex_to_weight` is not empty:
-        # 1. Get the minimum-weighted remaining vertex, remove it from the
-        #    dictionary, & add its weight to the total MST weight
-        # 2. Update that vertex's neighbors, if edge weights are smaller than
-        #    previous weights
+        # While `vertex_to_weight` is not empty:
+        while vertex_to_weight:
+            # Get the minimum-weighted remaining vertex, 
+            min_weighted_vertex = min(vertex_to_weight.items(), key=lambda x: x[1])
+            # remove it from the dictionary, & add its weight to the total MST weight
+            current_vertex = min_weighted_vertex[0]
+            vertex_to_weight.pop(current_vertex, None)
+            total_mst_weight += min_weighted_vertex[1]
+            # 2. Update that vertex's neighbors, if edge weights are smaller than previous weights
+            # print(min_weighted_vertex)
+            try:
+                for vertex in current_vertex.get_neighbors_with_weights():
+                    neighbor, weight = vertex
+                    if neighbor in vertex_to_weight and weight < vertex_to_weight[neighbor]:
+                        vertex_to_weight[neighbor] = weight
+                        # print(vertex_to_weight)
+            except KeyError:
+                continue
 
-        # TODO: Return total weight of MST
+        # Return total weight of MST
+        return total_mst_weight
+
+
 
     def find_shortest_path(self, start_id, target_id):
         """
@@ -260,4 +280,4 @@ if __name__ == "__main__":
     graph.add_edge('G','J', 9)
     graph.add_edge('H','J', 10)
 
-    print(graph.minimum_spanning_tree_kruskal())
+    print(graph.minimum_spanning_tree_prim())
