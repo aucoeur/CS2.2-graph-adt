@@ -9,8 +9,8 @@ class WeightedVertex(Vertex):
         Parameters:
         vertex_id (string): A unique identifier to identify this vertex.
         """
-        self.id = vertex_id
-        self.neighbors_dict = {} # id -> (obj, weight)
+        self.__id = vertex_id
+        self.__neighbors_dict = {} # id -> (obj, weight)
 
     def add_neighbor(self, vertex_obj, weight):
         """
@@ -20,32 +20,32 @@ class WeightedVertex(Vertex):
         vertex_obj (Vertex): An instance of Vertex to be stored as a neighbor.
         weight (number): The weight of this edge.
         """
-        if vertex_obj.get_id() in self.neighbors_dict.keys():
+        if vertex_obj.get_id() in self.__neighbors_dict.keys():
             return # it's already a neighbor
 
-        self.neighbors_dict[vertex_obj.get_id()] = (vertex_obj, weight)
+        self.__neighbors_dict[vertex_obj.get_id()] = (vertex_obj, weight)
 
     def get_neighbors(self):
         """Return the neighbors of this vertex."""
-        return [neighbor for (neighbor, weight) in self.neighbors_dict.values()]
+        return [neighbor for (neighbor, weight) in self.__neighbors_dict.values()]
 
     def get_neighbors_with_weights(self):
         """Return the neighbors of this vertex."""
-        return list(self.neighbors_dict.values())
+        return list(self.__neighbors_dict.values())
 
     def get_id(self):
         """Return the id of this vertex."""
-        return self.id
+        return self.__id
 
     def __str__(self):
         """Output the list of neighbors of this vertex."""
         neighbor_ids = [neighbor.get_id() for neighbor in self.get_neighbors()]
-        return f'{self.id} adjacent to {neighbor_ids}'
+        return f'{self.__id} adjacent to {neighbor_ids}'
 
     def __repr__(self):
         """Output the list of neighbors of this vertex."""
         neighbor_ids = [neighbor.get_id() for neighbor in self.get_neighbors()]
-        return f'{self.id} adjacent to {neighbor_ids}'
+        return f'{self.__id} adjacent to {neighbor_ids}'
 
 
 class WeightedGraph(Graph):
@@ -59,8 +59,8 @@ class WeightedGraph(Graph):
         Parameters:
         is_directed (boolean): Whether the graph is directed (edges go in only one direction).
         """
-        self.vertex_dict = {}
-        self.is_directed = is_directed
+        self.__vertex_dict = {}
+        self.__is_directed = is_directed
 
     def add_vertex(self, vertex_id):
         """
@@ -72,17 +72,17 @@ class WeightedGraph(Graph):
         Returns:
         Vertex: The new vertex object.
         """
-        if vertex_id in self.vertex_dict.keys():
+        if vertex_id in self.__vertex_dict.keys():
             return False # it's already there
         vertex_obj = WeightedVertex(vertex_id)
-        self.vertex_dict[vertex_id] = vertex_obj
+        self.__vertex_dict[vertex_id] = vertex_obj
         return True
 
     def get_vertex(self, vertex_id):
         """Return the vertex if it exists."""
-        if vertex_id not in self.vertex_dict.keys():
+        if vertex_id not in self.__vertex_dict.keys():
             return None
-        vertex_obj = self.vertex_dict[vertex_id]
+        vertex_obj = self.__vertex_dict[vertex_id]
         return vertex_obj
     
     def add_edge(self, vertex_id1, vertex_id2, weight):
@@ -94,23 +94,23 @@ class WeightedGraph(Graph):
         vertex_id2 (string): The unique identifier of the second vertex.
         weight (number): The edge weight.
         """
-        all_ids = self.vertex_dict.keys()
+        all_ids = self.__vertex_dict.keys()
         if vertex_id1 not in all_ids or vertex_id2 not in all_ids:
             return False
         vertex_obj1 = self.get_vertex(vertex_id1)
         vertex_obj2 = self.get_vertex(vertex_id2)
         vertex_obj1.add_neighbor(vertex_obj2, weight)
-        if not self.is_directed:
+        if not self.__is_directed:
             vertex_obj2.add_neighbor(vertex_obj1, weight)
 
     def get_vertices(self):
         """Return all the vertices in the graph"""
-        return list(self.vertex_dict.values())
+        return list(self.__vertex_dict.values())
 
     def __iter__(self):
         """Iterate over the vertex objects in the graph, to use sytax:
         for vertex in graph"""
-        return iter(self.vertex_dict.values())
+        return iter(self.__vertex_dict.values())
 
     def union(self, parent_map, vertex_id1, vertex_id2):
         """Combine vertex_id1 and vertex_id2 into the same group."""
