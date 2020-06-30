@@ -289,10 +289,6 @@ class Graph:
         """
         Return a list of all connected components, with each connected component represented as a list of vertex ids.
         """
-     def find_connected_components(self):
-        """
-        Return a list of all connected components, with each connected component represented as a list of vertex ids.
-        """
         vertices = set(self.__vertex_dict.keys())
     
         components = []
