@@ -1,4 +1,4 @@
-from graph import Graph, Vertex
+from graphs.graph import Graph, Vertex
 
 class WeightedVertex(Vertex):
 
@@ -236,7 +236,7 @@ class WeightedGraph(Graph):
                     vertex, weight = neighbor
                     # if in dict and min weight + neighbor weight less than INF or etc
                     if vertex in vertex_to_distance and weight + min_weighted_vertex[1] < vertex_to_distance[vertex]:
-                        print(vertex, (weight + min_weighted_vertex[1]))
+                        # print(vertex, (weight + min_weighted_vertex[1]))
                         vertex_to_distance[vertex] = weight + min_weighted_vertex[1]
             except KeyError:
                 continue
