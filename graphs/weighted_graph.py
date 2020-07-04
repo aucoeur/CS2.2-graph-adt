@@ -212,16 +212,37 @@ class WeightedGraph(Graph):
         Use Dijkstra's Algorithm to return the total weight of the shortest path
         from a start vertex to a destination.
         """
-        # TODO: Create a dictionary `vertex_to_distance` and initialize all
+        # Create a dictionary `vertex_to_distance` and initialize all
         # vertices to INFINITY - hint: use `float('inf')`
+        vertex_to_distance = {x:float('inf') for x in self.get_vertices()}
+        start_vertex = self.get_vertex(start_id)
+        vertex_to_distance[start_vertex] = 0
 
-        # TODO: While `vertex_to_distance` is not empty:
-        # 1. Get the minimum-distance remaining vertex, remove it from the
-        #    dictionary. If it is the target vertex, return its distance.
-        # 2. Update that vertex's neighbors by adding the edge weight to the
-        #    vertex's distance, if it is lower than previous.
+        # While `vertex_to_distance` is not empty:
+        while vertex_to_distance:
+            # Get the minimum-distance remaining vertex
+            min_weighted_vertex = min(vertex_to_distance.items(), key=lambda x: x[1])
+            # Remove it from the dictionary. 
+            vertex_to_distance.pop(min_weighted_vertex[0])
 
-        # TODO: Return None if target vertex not found.
+            # If it is the target vertex, return its distance.
+            if min_weighted_vertex[0].get_id() == target_id:
+                return min_weighted_vertex[1]
+
+            # Update that vertex's neighbors by adding the edge weight to the
+            #    vertex's distance, if it is lower than previous.
+            try:
+                for neighbor in min_weighted_vertex[0].get_neighbors_with_weights():
+                    vertex, weight = neighbor
+                    # if in dict and min weight + neighbor weight less than INF or etc
+                    if vertex in vertex_to_distance and weight + min_weighted_vertex[1] < vertex_to_distance[vertex]:
+                        print(vertex, (weight + min_weighted_vertex[1]))
+                        vertex_to_distance[vertex] = weight + min_weighted_vertex[1]
+            except KeyError:
+                continue
+
+        # Return None if target vertex not found.
+        return None
 
 
     def floyd_warshall(self):
@@ -280,4 +301,4 @@ if __name__ == "__main__":
     graph.add_edge('G','J', 9)
     graph.add_edge('H','J', 10)
 
-    print(graph.minimum_spanning_tree_prim())
+    print(graph.find_shortest_path('A', 'J'))
